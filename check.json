@@ -1,0 +1,10 @@
+{
+  "status": "online",
+  "version": "2.0.1",
+  "binaries": [
+    {"name": "Ajustes", "status": "OK"},
+    {"name": "Arquivos", "status": "OK"},
+    {"name": "Notas", "status": "CORRUPT"},
+    {"name": "Terminal", "status": "OK"}
+  ]
+}
