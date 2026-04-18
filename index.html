@@ -99,8 +99,39 @@
     // Substitua pela URL bruta (raw) do seu arquivo no GitHub
     const url = 'https://raw.githubusercontent.com/pitocoofc/Vonnect/main/check.json';
     log("Checking system...")
+    // Exemplo com setTimeout: Executa após 2 segundos
+setTimeout(() => {
+  log("Operating System...");
+}, 2000);
+            setTimeout(() => {
+  log("Operating System...");
+}, 500);
+            setTimeout(() => {
+  log("Operating System (10%");
+}, 500);
+            setTimeout(() => {
+  log("Operating System (20%");
+}, 500);
+            setTimeout(() => {
+  log("Operating System (30%");
+}, 500);
+            setTimeout(() => {
+  log("Operating System (45%");
+}, 2500);
+        setTimeout(() => {
+  log("Operating System (70%");
+}, 1500);
+            setTimeout(() => {
+  log("Operating System (90%");
+}, 2500);
+            setTimeout(() => {
+  log("Operating System (99%");
+}, 3000);
+log("Finishing verification...)
+            
+            
     
-    log("Conectando ao servidor de integridade...");
+    log("Conectando ao servidor de integridade para a atualização...");
     
     try {
         const response = await fetch(url);
