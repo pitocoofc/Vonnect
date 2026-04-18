@@ -1,1 +1,150 @@
-# Vonnect
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Nexo Kernel Manager</title>
+    <script src="sys_config.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Consolas', monospace; }
+        body { background: #0a0a0a; color: #0f0; overflow: hidden; padding: 20px; }
+        
+        h2 { border-bottom: 1px solid #0f0; padding-bottom: 10px; margin-bottom: 20px; font-weight: 300; letter-spacing: 2px; }
+
+        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
+        
+        .nexo-btn {
+            background: #001100; border: 1px solid #0f0; color: #0f0;
+            padding: 20px; cursor: pointer; text-align: center;
+            transition: 0.2s; font-size: 13px; text-transform: uppercase;
+        }
+        .nexo-btn:active { background: #0f0; color: #000; }
+
+        /* TERMINAL DE VERIFICAÇÃO */
+        #term-box {
+            background: #000; border: 1px solid #333; height: 150px;
+            padding: 10px; font-size: 11px; overflow-y: auto; margin-bottom: 20px;
+            color: #0c0; line-height: 1.5;
+        }
+
+        /* TELA DE OPÇÕES (MODAL) */
+        #options-modal {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.95);
+            display: none; flex-direction: column; padding: 30px; z-index: 100;
+        }
+        .opt-row { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 15px 0; border-bottom: 1px solid #222; 
+        }
+        .switch { width: 25px; height: 25px; border: 1px solid #0f0; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+        .back-btn { margin-top: auto; padding: 15px; border: 1px solid #f00; color: #f00; text-align: center; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <h2>NEXO_KERNEL_UTILITY v2.0</h2>
+
+    <div id="term-box" id="log-output">
+        > SYSTEM READY...<br>
+        > WAITING FOR COMMAND_
+    </div>
+
+    <div class="btn-grid">
+        <button class="nexo-btn" onclick="verifySoftware()">Verificação de Software</button>
+        <button class="nexo-btn" onclick="openOptions()">System Options</button>
+        <button class="nexo-btn" onclick="fullReset()" style="border-color: #f00; color: #f00;">Hard Reset (Cache)</button>
+        <button class="nexo-btn" onclick="window.location.href='os.html'">Return to OS</button>
+    </div>
+
+    <div id="options-modal">
+        <h2 style="color: #0f0;">ADVANCED_SETTINGS</h2>
+        
+        <div class="opt-row">
+            <span>Download unknown sources</span>
+            <div class="switch" id="sw-unknown" onclick="toggleOption('unknown_sources')"></div>
+        </div>
+
+        <div class="opt-row">
+            <span>Rapid Optimization</span>
+            <div class="switch" onclick="log('Optimizing...')"></div>
+        </div>
+
+        <div class="opt-row">
+            <span>Advanced Graphics (Animations)</span>
+            <div class="switch" id="sw-graphics" onclick="toggleOption('adv_graphics')"></div>
+        </div>
+
+        <div class="back-btn" onclick="closeOptions()">FECHAR E SALVAR</div>
+    </div>
+
+    <script>
+        const output = document.getElementById('term-box');
+        
+        function log(msg) {
+            output.innerHTML += `<br>> ${msg}`;
+            output.scrollTop = output.scrollHeight;
+        }
+
+        // 1. HARD RESET
+        function fullReset() {
+            if(confirm("LIMPAR TODO O CACHE DO SISTEMA?")) {
+                localStorage.clear();
+                log("CACHE PURGED. SYSTEM RESET.");
+                setTimeout(() => window.top.location.href='login.html', 1500);
+            }
+        }
+
+        // 2. VERIFICAÇÃO DE SOFTWARE (SIMULADA)
+        async function verifySoftware() {
+    // Substitua pela URL bruta (raw) do seu arquivo no GitHub
+    const url = 'https://raw.githubusercontent.com/SEU_USUARIO/SEU_REPOSITORIO/main/check.json';
+    
+    log("Conectando ao servidor de integridade...");
+    
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error("Falha na conexão");
+        
+        const data = await response.json();
+        
+        log(`Status do servidor: ${data.status.toUpperCase()}`);
+        log(`Verificando binários versão ${data.version}:`);
+        
+        for (let app of data.binaries) {
+            await new Promise(r => setTimeout(r, 400)); // Delay para efeito visual
+            log(`[${app.status}] -> ${app.name}`);
+        }
+        
+        log("Sincronização concluída com sucesso.");
+    } catch (error) {
+        log("ERRO: Não foi possível contatar o servidor.");
+        log(`DETALHES: ${error.message}`);
+    }
+}
+
+
+        // 3. OPÇÕES E VARIÁVEIS
+        function openOptions() {
+            // Carrega estado visual dos switches
+            document.getElementById('sw-unknown').innerText = localStorage.getItem('unknown_sources') === 'on' ? 'X' : '';
+            document.getElementById('sw-graphics').innerText = localStorage.getItem('adv_graphics') === 'on' ? 'X' : '';
+            document.getElementById('options-modal').style.display = 'flex';
+        }
+
+        function toggleOption(key) {
+            const current = localStorage.getItem(key);
+            const newState = current === 'on' ? 'off' : 'on';
+            localStorage.setItem(key, newState);
+            
+            // Atualiza o visual na hora
+            const id = key === 'unknown_sources' ? 'sw-unknown' : 'sw-graphics';
+            document.getElementById(id).innerText = newState === 'on' ? 'X' : '';
+            log(`VAR ${key} SET TO ${newState.toUpperCase()}`);
+        }
+
+        function closeOptions() {
+            document.getElementById('options-modal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
