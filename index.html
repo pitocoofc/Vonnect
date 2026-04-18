@@ -50,7 +50,7 @@
     </div>
 
     <div class="btn-grid">
-        <button class="nexo-btn" onclick="verifySoftware()">Verificação de Software</button>
+        <button class="nexo-btn" onclick="verifySoftware()">Verificação de Software e updates</button>
         <button class="nexo-btn" onclick="openOptions()">System Options</button>
         <button class="nexo-btn" onclick="fullReset()" style="border-color: #f00; color: #f00;">Hard Reset (Cache)</button>
         <button class="nexo-btn" onclick="window.location.href='os.html'">Return to OS</button>
@@ -98,6 +98,7 @@
         async function verifySoftware() {
     // Substitua pela URL bruta (raw) do seu arquivo no GitHub
     const url = 'https://raw.githubusercontent.com/pitocoofc/Vonnect/main/check.json';
+    log("Checking system...")
     
     log("Conectando ao servidor de integridade...");
     
